@@ -1,29 +1,24 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 
-const jsonParser = bodyParser.json();
 const app = express();
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-let corsOptions = {
-    optionsSuccessStatus: 200,
-    origin: 'http://localhost'
-};
-
-app.use(cors({ origin: false }));
-
 app.get('/', function(request, response) {
-    console.log(new Date() + ' GET /');
-    response.status(200).send('hola chicos');
+    let theDate = new Date().toISOString();
+    console.log(theDate + ' GET /');
+    response.set('Access-Control-Allow-Origin', '*');
+    response.status(200).send('Hola chicos !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 });
 
 app.post('/save', urlencodedParser, function(request, response) {
     let code = 200;
     let secureResponse = 'Holas!'
+    let theDate = new Date().toISOString();
+    console.log(`${theDate} POST /save ${request.body.email_address || ':)'}`);
+
     try {
-        console.log(`${new Date()} POST /save ${request.body.email_address || ':)'}`);
         if (request.body.email_address) {
             secureResponse = `${secureResponse} ${request.body.email_address}`
         } else {
@@ -35,6 +30,7 @@ app.post('/save', urlencodedParser, function(request, response) {
         console.log(e);
     }
 
+    response.set('Access-Control-Allow-Origin', '*')
     return response.status(code).send(secureResponse);
 });
 

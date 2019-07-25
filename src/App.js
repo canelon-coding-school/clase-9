@@ -4,17 +4,23 @@ import axios from 'axios';
 import './App.css';
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { message: null }
+  }
+
   sayHi = () => {
-    axios.get('http://192.168.0.11:9000/', {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      }
-    })
-      .then(response => alert(response.data))
+    axios.get('http://192.168.0.11:9000/')
+      .then(response => 
+        this.setState({ message: response.data })
+      )
       .catch(error => alert(error));
   }
 
   render() {
+    const { message } = this.state;
+
     return (
       <div className="App">
         <button onClick={this.sayHi}>
@@ -31,7 +37,7 @@ class App extends React.Component {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn React
+            {message ? message : 'Learn React'}
           </a>
         </header>
       </div>
